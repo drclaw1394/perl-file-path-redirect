@@ -1,0 +1,75 @@
+use strict;
+use warnings;
+
+use File::Path qw<make_path remove_tree>;
+use File::Spec::Functions qw<abs2rel>;
+use File::Basename qw<dirname basename>;
+use Test::More;
+BEGIN { use_ok('File::Path::Redirect') };
+
+
+
+my $contents="Contents of original";
+my $temp_dir= "testing_dir";
+my $temp_dir2= "testing_dir2";
+my $source_file="$temp_dir/$temp_dir2/original_file.txt";
+my $target_file="$temp_dir/target_file.txt";
+make_path "$temp_dir/$temp_dir2";
+
+# Create  a source file
+open my $fh, ">", $source_file;
+print $fh $contents;
+close $fh;
+
+my $relative=make_redirect($source_file, $target_file);
+  say STDERR "RELATIVE PATH IS to  source fie $target_file to target file $source_file";
+  say STDERR $relative;
+#remove_tree $temp_dir;
+  #
+
+my $expected=abs2rel($source_file, dirname $target_file);
+ok $relative eq $expected,"Relative path match";
+
+my $redirect=follow_redirect $target_file;
+say STDERR "REDIRECT IS $redirect";
+ok $redirect eq $source_file, "Redirect to source file";
+
+ok is_redirect($target_file), "File is redirect file";
+
+ok ! is_redirect($source_file), "File is not redirect file";
+
+my $trace=[];
+$redirect=redirect_chained(5,$trace);
+ok(defined($redirect)), "Chained redirects";
+say STDERR "REDIRECT IS $redirect";
+say STDERR "Trace is @{$trace}";
+
+$redirect=redirect_chained(10, $trace);
+ok(!defined($redirect) and $! == File::Path::Redirect::TOO_MANY), "Too many Chained redirects";
+say STDERR "REDIRECT IS $redirect";
+say STDERR "Trace is @{$trace}";
+
+sub redirect_chained{
+  my $count=shift;
+  my $trace=shift;
+  my $s_file;
+  my $t_file;
+  for(1..$count){
+
+    $s_file="$temp_dir/@{[$_+0]}.txt";
+    $t_file="$temp_dir/@{[$_+1]}.txt";
+
+    my $relative=make_redirect($s_file, $t_file);
+
+  }
+  open my $fh, ">", "$temp_dir/1.txt";
+  print $fh $contents;
+  close $fh;
+
+
+  $redirect=follow_redirect $t_file, undef, $trace;
+
+}
+
+
+done_testing;

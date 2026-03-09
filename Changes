@@ -1,0 +1,6 @@
+Revision history for Perl extension File::Path::Redirect.
+
+0.01  Mon Mar  9 12:41:59 2026
+	- original version; created by h2xs 1.23 with options
+		--name File::Path::Redirect -X -P -b 5.24.0
+
