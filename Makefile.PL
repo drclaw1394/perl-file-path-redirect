@@ -3,6 +3,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'File::Path::Redirect',
     VERSION_FROM      => 'lib/File/Path/Redirect.pm', # finds $VERSION, requires EU::MM from perl >= 5.5
+
+	  MIN_PERL_VERSION => '5.24',
+
     PREREQ_PM         => {
       "constant::more"  => 0,
       "Export::These"   => v0.3.0,

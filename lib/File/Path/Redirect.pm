@@ -1,6 +1,16 @@
+package File::Path::Redirect;
+
+use strict;
+use warnings;
+
+our $VERSION="v0.1.2";
+
+
+
+
 =head1 NAME
 
-File::Path::Redirect - Poor mans symbolic link path redirection
+File::Path::Redirect - Poor Man's Symbolic Link Path Redirection
 
 =head1 SYNOPSIS
 
@@ -141,14 +151,6 @@ it under the same terms as Perl itself, or under the MIT license
 
 =cut
 
-package File::Path::Redirect;
-
-#use v5.36;
-
-use strict;
-use warnings;
-
-our $VERSION=v0.1.1;
 
 #use IO::FD;
 use Fcntl qw(O_RDONLY);
