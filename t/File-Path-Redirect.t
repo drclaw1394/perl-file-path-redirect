@@ -27,6 +27,9 @@ my $expected=abs2rel($source_file, dirname $target_file);
 ok $relative eq $expected,"Relative path match";
 
 my $redirect=follow_redirect $target_file;
+use feature "say";
+say STDERR "Expected  $source_file";
+say STDERR "Got       $redirect";
 ok $redirect eq $source_file, "Redirect to source file";
 
 ok is_redirect($target_file), "File is redirect file";

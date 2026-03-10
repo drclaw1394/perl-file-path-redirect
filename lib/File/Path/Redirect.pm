@@ -176,7 +176,8 @@ sub make_redirect {
     else {
       $path=abs2rel($existing, dirname $name);
     }
-
+    use feature "say";
+    say STDERR "CReATE redirect with $path";
     open my $fh, ">", $name or die $!;
     print $fh "$magic$path" or die $!;
     close $fh;
