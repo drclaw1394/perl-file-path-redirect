@@ -154,7 +154,7 @@ use File::Basename qw<dirname basename>;
 my $default_limit=10;
 my $mode=O_RDONLY;  # Read only while following links
 my $magic="!<symlink>";
-my $max_size=length($magic)+POSIX::pathconf("/", &POSIX::_PC_PATH_MAX);
+my $max_size = $^O eq 'MSWin32' ? 260 : (POSIX::pathconf('/', &POSIX::_PC_PATH_MAX) // 4096);
 
 use constant::more qw<OK=0 TOO_MANY ACCESS_ERROR NOT_A_REDIRECT>;
 use Export::These qw<make_redirect follow_redirect is_redirect>;
