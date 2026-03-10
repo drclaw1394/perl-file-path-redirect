@@ -21,17 +21,12 @@ open my $fh, ">", $source_file;
 print $fh $contents;
 close $fh;
 
-my $relative=make_redirect($source_file, $target_file);
-  say STDERR "RELATIVE PATH IS to  source fie $target_file to target file $source_file";
-  say STDERR $relative;
-#remove_tree $temp_dir;
-  #
+my $relative=make_redirect($source_file, $target_file, 1);
 
 my $expected=abs2rel($source_file, dirname $target_file);
 ok $relative eq $expected,"Relative path match";
 
 my $redirect=follow_redirect $target_file;
-say STDERR "REDIRECT IS $redirect";
 ok $redirect eq $source_file, "Redirect to source file";
 
 ok is_redirect($target_file), "File is redirect file";
@@ -40,14 +35,10 @@ ok ! is_redirect($source_file), "File is not redirect file";
 
 my $trace=[];
 $redirect=redirect_chained(5,$trace);
-ok(defined($redirect)), "Chained redirects";
-say STDERR "REDIRECT IS $redirect";
-say STDERR "Trace is @{$trace}";
+ok((defined($redirect)), "Chained redirects");
 
 $redirect=redirect_chained(10, $trace);
-ok(!defined($redirect) and $! == File::Path::Redirect::TOO_MANY), "Too many Chained redirects";
-say STDERR "REDIRECT IS $redirect";
-say STDERR "Trace is @{$trace}";
+ok((!defined($redirect) and $! == File::Path::Redirect::TOO_MANY), "Too many Chained redirects");
 
 sub redirect_chained{
   my $count=shift;
@@ -59,7 +50,7 @@ sub redirect_chained{
     $s_file="$temp_dir/@{[$_+0]}.txt";
     $t_file="$temp_dir/@{[$_+1]}.txt";
 
-    my $relative=make_redirect($s_file, $t_file);
+    my $relative=make_redirect($s_file, $t_file,1);
 
   }
   open my $fh, ">", "$temp_dir/1.txt";
@@ -71,5 +62,6 @@ sub redirect_chained{
 
 }
 
+remove_tree $temp_dir;
 
 done_testing;
