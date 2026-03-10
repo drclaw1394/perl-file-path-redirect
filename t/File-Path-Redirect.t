@@ -38,7 +38,7 @@ $redirect=redirect_chained(5,$trace);
 ok((defined($redirect)), "Chained redirects");
 
 $redirect=redirect_chained(10, $trace);
-ok((!defined($redirect) and $! == File::Path::Redirect::TOO_MANY), "Too many Chained redirects");
+ok((!defined($redirect) and $! == File::Path::Redirect::TOO_MANY()), "Too many Chained redirects");
 
 sub redirect_chained{
   my $count=shift;
