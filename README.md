@@ -1,6 +1,6 @@
 # NAME
 
-File::Path::Redirect - Poor mans symbolic link path redirection
+File::Path::Redirect - Poor Man's Symbolic Link Path Redirection
 
 # SYNOPSIS
 
