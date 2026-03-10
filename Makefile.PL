@@ -4,7 +4,7 @@ WriteMakefile(
     NAME              => 'File::Path::Redirect',
     VERSION_FROM      => 'lib/File/Path/Redirect.pm', # finds $VERSION, requires EU::MM from perl >= 5.5
 
-	  MIN_PERL_VERSION => '5.24',
+	  MIN_PERL_VERSION => '5.24.0',
 
     PREREQ_PM         => {
       "constant::more"  => 0,
