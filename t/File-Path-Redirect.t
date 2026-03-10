@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use File::Path qw<make_path remove_tree>;
-use File::Spec::Functions qw<abs2rel>;
+use File::Spec::Functions qw<abs2rel catfile catdir>;
 use File::Basename qw<dirname basename>;
 use Test::More;
 BEGIN { use_ok('File::Path::Redirect') };
@@ -12,9 +12,9 @@ BEGIN { use_ok('File::Path::Redirect') };
 my $contents="Contents of original";
 my $temp_dir= "testing_dir";
 my $temp_dir2= "testing_dir2";
-my $source_file="$temp_dir/$temp_dir2/original_file.txt";
-my $target_file="$temp_dir/target_file.txt";
-make_path "$temp_dir/$temp_dir2";
+my $source_file=catfile $temp_dir, $temp_dir2,"original_file.txt";
+my $target_file=catfile $temp_dir,"target_file.txt";
+make_path catdir $temp_dir, $temp_dir2;
 
 # Create  a source file
 open my $fh, ">", $source_file;
@@ -50,13 +50,13 @@ sub redirect_chained{
   my $t_file;
   for(1..$count){
 
-    $s_file="$temp_dir/@{[$_+0]}.txt";
-    $t_file="$temp_dir/@{[$_+1]}.txt";
+    $s_file=catfile $temp_dir,"@{[$_+0]}.txt";
+    $t_file=catfile $temp_dir,"@{[$_+1]}.txt";
 
     my $relative=make_redirect($s_file, $t_file,1);
 
   }
-  open my $fh, ">", "$temp_dir/1.txt";
+  open my $fh, ">", catfile $temp_dir,"1.txt";
   print $fh $contents;
   close $fh;
 

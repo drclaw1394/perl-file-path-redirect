@@ -148,7 +148,7 @@ our $VERSION=v0.1.0;
 #use IO::FD;
 use Fcntl qw(O_RDONLY);
 use POSIX;
-use File::Spec::Functions qw<abs2rel rel2abs file_name_is_absolute>;
+use File::Spec::Functions qw<abs2rel rel2abs catfile file_name_is_absolute>;
 use File::Basename qw<dirname basename>;
 
 my $default_limit=10;
@@ -240,7 +240,7 @@ sub follow_redirect{
     }
     else {
       # Build realtive to current file
-      $new_path= dirname($path)."/".$new_path;
+      $new_path= catfile dirname($path), $new_path;
     }
 
     push @$trace, $path if $trace;
