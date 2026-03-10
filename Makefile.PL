@@ -13,6 +13,17 @@ WriteMakefile(
     ABSTRACT_FROM     => 'lib/File/Path/Redirect.pm', # retrieve abstract from module
     AUTHOR            => 'Ruben Westerberg <drclaw@local>',
     LICENSE           => 'mit',
-    #Value must be from legacy list of licenses here
-    #https://metacpan.org/pod/Module::Build::API
+    META_ADD => {
+      "meta-spec" => {
+        version => 2
+      },
+      resources=> {
+        repository =>{
+          type => "git",
+          url => "git://github.com/drclaw1394/perl-file-path-redirect.git",
+          web => "https://github.com/drclaw1394/perl-file-path-redirect",
+        }
+      }
+    }
+
 );
