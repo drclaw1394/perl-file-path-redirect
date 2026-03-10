@@ -68,7 +68,8 @@ line of the format:
   
   !<symlink>PATH
 
-Where PATH is the relative path to a file it links to. It can be a link to another link file.
+!<symlink> is a magic header
+PATH is the relative path to a file it links to. It can be a link to another link file.
 
 
 Before using a path in an C<open> function, the path can be passed to
@@ -77,6 +78,8 @@ found. This is path can be used in the C<open> call instead.
 
 
 =head1 API
+
+=head2 Creating Redirects
 
 =head3 make_redirect
 
@@ -94,6 +97,8 @@ is a true value.
 Returns the relative path between the two files if possible, otherwise a
 absolute path.  Dies on any IO related errors in creating / opening / writing /
 closing the link file.
+
+=head2 Using Redirects
 
 =head3 follow_redirect 
 
@@ -176,8 +181,6 @@ sub make_redirect {
     else {
       $path=abs2rel($existing, dirname $name);
     }
-    use feature "say";
-    say STDERR "CReATE redirect with $path";
     open my $fh, ">", $name or die $!;
     print $fh "$magic$path" or die $!;
     close $fh;
@@ -186,20 +189,9 @@ sub make_redirect {
   die "Redirect/Link file already exists: $name";
 }
 
-# Takes a path  and resolves any redirects it might initate
-# Returns the recursively redirected path
-#
-# $path is require and is the inital path
-# $limit is the optional number of redirects allowed (10 by default)
-# $trace is an optional array ref, which will contain the redirects encounterd
-#
-# Opends a file in read mode, reads it, then closes it.
-# 
-# 
 sub follow_redirect{
   my ($path, $limit, $trace)=@_;
 
-  #say STDERR "FOLLOW REDIREC: ", $path;
   if(!defined $limit){
     $limit=$default_limit;
   }
@@ -249,7 +241,6 @@ sub follow_redirect{
   else {
     # Not a redirect file, this is the target
     $!=NOT_A_REDIRECT;
-    #say STDERR "NOT A REDIRECT ",$path;
     return $path;
   }
 }

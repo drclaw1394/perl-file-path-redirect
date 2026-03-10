@@ -67,13 +67,16 @@ line of the format:
 !<symlink>PATH
 ```
 
-Where PATH is the relative path to a file it links to. It can be a link to another link file.
+!&lt;symlink> is a magic header
+PATH is the relative path to a file it links to. It can be a link to another link file.
 
 Before using a path in an `open` function, the path can be passed to
 `follow_redirect`. The return value is the path of the first non link file
 found. This is path can be used in the `open` call instead.
 
 # API
+
+## Creating Redirects
 
 ### make\_redirect
 
@@ -91,6 +94,8 @@ is a true value.
 Returns the relative path between the two files if possible, otherwise a
 absolute path.  Dies on any IO related errors in creating / opening / writing /
 closing the link file.
+
+## Using Redirects
 
 ### follow\_redirect 
 

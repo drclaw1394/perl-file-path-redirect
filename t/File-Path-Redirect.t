@@ -23,13 +23,18 @@ close $fh;
 
 my $relative=make_redirect($source_file, $target_file, 1);
 
+# Test if it is a redirect
+ok is_redirect($target_file), "Is a redirect file";
+ok !is_redirect($source_file), "Is not redirect file";
+
+
+
+
 my $expected=abs2rel($source_file, dirname $target_file);
 ok $relative eq $expected,"Relative path match";
 
+
 my $redirect=follow_redirect $target_file;
-use feature "say";
-say STDERR "Expected  $source_file";
-say STDERR "Got       $redirect";
 ok $redirect eq $source_file, "Redirect to source file";
 
 ok is_redirect($target_file), "File is redirect file";
@@ -64,6 +69,7 @@ sub redirect_chained{
   $redirect=follow_redirect $t_file, undef, $trace;
 
 }
+
 
 remove_tree $temp_dir;
 

@@ -57,14 +57,15 @@ HOW IT WORKS
 
       !<symlink>PATH
 
-    Where PATH is the relative path to a file it links to. It can be a link
-    to another link file.
+    !<symlink> is a magic header PATH is the relative path to a file it
+    links to. It can be a link to another link file.
 
     Before using a path in an "open" function, the path can be passed to
     "follow_redirect". The return value is the path of the first non link
     file found. This is path can be used in the "open" call instead.
 
 API
+  Creating Redirects
    make_redirect
       my $path = make_redirect $existing_file, $link_file, $force;
 
@@ -80,6 +81,7 @@ API
     absolute path. Dies on any IO related errors in creating / opening /
     writing / closing the link file.
 
+  Using Redirects
    follow_redirect
       my $path = follow_redirect $file_path, $limit;
 
