@@ -138,7 +138,11 @@ it under the same terms as Perl itself, or under the MIT license
 
 package File::Path::Redirect;
 
-use v5.36;
+#use v5.36;
+
+use strict;
+use warnings;
+
 our $VERSION=v0.1.0;
 
 #use IO::FD;
