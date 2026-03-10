@@ -7,7 +7,6 @@ WriteMakefile(
     VERSION_FROM      => 'lib/File/Path/Redirect.pm', # finds $VERSION, requires EU::MM from perl >= 5.5
     PREREQ_PM         => {
       "constant::more"  => 0,
-      "IO::FD"          => v0.3.11,
       "Export::These"   => v0.3.0,
 
     }, # e.g., Module::Name => 1.1

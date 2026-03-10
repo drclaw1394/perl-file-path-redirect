@@ -141,15 +141,12 @@ package File::Path::Redirect;
 use v5.36;
 our $VERSION=v0.1.0;
 
-use IO::FD;
+#use IO::FD;
 use Fcntl qw(O_RDONLY);
 use POSIX;
 use File::Spec::Functions qw<abs2rel rel2abs file_name_is_absolute>;
 use File::Basename qw<dirname basename>;
 
-# IO::FD is used for pread.
-# This allows reading of file without effecting the global read position of the file descriptor
-#
 my $default_limit=10;
 my $mode=O_RDONLY;  # Read only while following links
 my $magic="!<symlink>";
@@ -213,18 +210,19 @@ sub follow_redirect{
 
   # Open the file
   #
-  my $fd=IO::FD::open($path, $mode);
+  my $fd=POSIX::open($path, $mode);
   defined $fd or die $!;
   my $buffer="";
   my $count=0;
   # Read the contents up to the max length of path for the current system + magic header size
   my $res;
-  while($res=IO::FD::pread $fd, my $data="", $max_size, $count){
+  while(($res=POSIX::read $fd, my $data="", $max_size)!=0){
     $count+=$res;
+    
     $buffer.=$data;
   }
   defined $res or die $!;
-  IO::FD::close $fd;
+  POSIX::close $fd;
 
 
   # Check for magic header
@@ -254,18 +252,18 @@ sub follow_redirect{
 sub is_redirect {
   my ($path)=@_;
 
-  my $fd=IO::FD::open($path, $mode);
+  my $fd=POSIX::open($path, $mode);
   defined $fd or die $!;
   my $buffer="";
   my $count=0;
   # Read the contents up to the max length of path for the current system + magic header size
   my $res;
-  while($res=IO::FD::pread $fd, my $data="", $max_size, $count){
+  while(($res=POSIX::read $fd, my $data="", $max_size)!=0){
     $count+=$res;
     $buffer.=$data;
   }
   defined $res or die $!;
-  IO::FD::close $fd;
+  POSIX::close $fd;
 
 
   # Check for magic header
